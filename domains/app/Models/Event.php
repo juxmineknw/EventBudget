@@ -1,3 +1,5 @@
+<?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -5,18 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     protected $fillable = [
-        'event_name',
+        'name',
+        'description',
         'start_date',
         'end_date',
-        'client',
+        'client_name',
         'location',
         'total_budget',
-        'description'
+        'venue_name',
+        'venue_url',
+        'accommodation_name',
+        'accommodation_url',
+        'drive_link'
     ];
 
     public function details()
     {
-        return $this->hasOne(EventDetail::class);
+        return $this->hasMany(EventDetail::class);
     }
 
     public function team()

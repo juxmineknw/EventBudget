@@ -7,10 +7,10 @@ services:
       dockerfile: Dockerfile
     container_name: eventbudget_app
     working_dir: /var/www
-    volumes:
-      - ./domains:/var/www
     ports:
       - "8000:8000"
+    volumes:
+      - ./domains:/var/www
     depends_on:
       - db
     networks:
@@ -22,17 +22,14 @@ services:
       dockerfile: Dockerfile
     container_name: eventbudget_frontend
     working_dir: /app
+    ports:
+      - "3000:3000"
     volumes:
       - ./web:/app
       - /app/node_modules
-      - /app/.nuxt
     environment:
       NUXT_HOST: "0.0.0.0"
       NUXT_PORT: "3000"
-      CHOKIDAR_USEPOLLING: "true"
-      NITRO_POLLING_INTERVAL: "100"
-    ports:
-      - "3000:3000"
     networks:
       - app-network
 
@@ -54,13 +51,12 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    container_name: eventbudget_phpmyadmin
     restart: always
     ports:
       - "8081:80"
     environment:
       PMA_HOST: db
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
       PMA_USER: root
       PMA_PASSWORD: root
     depends_on:

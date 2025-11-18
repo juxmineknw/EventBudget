@@ -2,15 +2,15 @@ FROM node:20-alpine
 
 WORKDIR /app
 
+# Install curl (ใช้ apk)
+RUN apk update && apk add curl
+
 COPY package*.json ./
+COPY yarn.lock ./
 
 RUN yarn install
 
 COPY . .
 
-ENV NUXT_HOST=0.0.0.0
-ENV NUXT_PORT=3000
-
 EXPOSE 3000
-
 CMD ["yarn", "dev"]
