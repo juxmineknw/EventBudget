@@ -75,7 +75,7 @@ const isActive = (path) => route.path.startsWith(path)
 
         <!-- Expense Categories -->
         <NuxtLink
-          to="/expense-cate"
+          to="/expense-cate/categories"
           :class="[
             'px-4 py-2 rounded-full transition',
             isActive('/expense-cate')

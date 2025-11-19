@@ -25,12 +25,22 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./web:/app          # ← mount ทั้งโฟลเดอร์ web ไปที่ /app
+      - ./web:/app:delegated
       - /app/node_modules
+    stdin_open: true
+    tty: true
     environment:
       NUXT_HOST: "0.0.0.0"
       NUXT_PORT: "3000"
-      CHOKIDAR_USEPOLLING: true
+
+      # 🟢 สำคัญ — polling mode แบบ Docker Windows
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
+      NUXT_FORCE_WATCH: "true"
+
+      # 🟢 HMR
+      VITE_HMR_HOST: "localhost"
+      VITE_HMR_PORT: "3000"
     networks:
       - app-network
 
