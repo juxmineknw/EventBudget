@@ -206,83 +206,90 @@ onMounted(load);
     <!-- ================================================================ -->
     <div
       v-if="showAddModal"
-      class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+      class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 px-4 md:px-0"
     >
-      <div class="bg-white w-[430px] rounded-3xl p-6 shadow-xl">
-        <div class="flex justify-between mb-4">
+      <div
+        class="bg-white w-full max-w-[430px] md:max-w-[450px] lg:max-w-[480px] max-h-[90vh] rounded-3xl p-5 md:p-6 shadow-xl flex flex-col overflow-hidden"
+      >
+        <!-- HEADER -->
+        <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-bold">เพิ่มหมวดหมู่</h2>
           <button @click="showAddModal = false" class="text-2xl text-gray-400">
             ✕
           </button>
         </div>
 
-        <!-- PREVIEW -->
-        <div
-          class="rounded-2xl p-6 text-center mb-4 shadow"
-          :style="{ background: color }"
-        >
-          <div class="flex justify-center mb-2">
+        <!-- CONTENT SCROLL -->
+        <div class="flex-1 overflow-y-auto pr-1">
+          <!-- PREVIEW -->
+          <div
+            class="rounded-2xl p-6 text-center mb-4 shadow"
+            :style="{ background: color }"
+          >
+            <div class="flex justify-center mb-2">
+              <div
+                class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow"
+              >
+                <Icon v-if="icon" :name="icon" class="text-4xl" />
+              </div>
+            </div>
+            <p class="font-bold text-lg">{{ name || "ชื่อหมวดหมู่" }}</p>
+          </div>
+
+          <!-- COLOR PICKER -->
+          <div class="flex gap-2 overflow-x-auto py-2 mb-3">
             <div
-              class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow"
+              v-for="c in colorOptions"
+              :key="c"
+              class="w-8 h-8 rounded-full cursor-pointer border"
+              :style="{ backgroundColor: c }"
+              @click="color = c"
             >
-              <Icon v-if="icon" :name="icon" class="text-4xl" />
+              <div
+                v-if="color === c"
+                class="w-full h-full flex items-center justify-center text-xl"
+              >
+                ✓
+              </div>
             </div>
           </div>
-          <p class="font-bold text-lg">{{ name || "ชื่อหมวดหมู่" }}</p>
-        </div>
 
-        <!-- COLOR PICKER -->
-        <div class="flex gap-2 overflow-x-auto py-2 mb-3">
-          <div
-            v-for="c in colorOptions"
-            :key="c"
-            class="w-8 h-8 rounded-full cursor-pointer border"
-            :style="{ backgroundColor: c }"
-            @click="color = c"
+          <!-- NAME -->
+          <input
+            v-model="name"
+            class="w-full p-3 border rounded-xl mb-4 bg-base-bg"
+            placeholder="ชื่อหมวดหมู่"
+          />
+
+          <!-- CATEGORY DROPDOWN -->
+          <select
+            v-model="selectedIconCategory"
+            class="w-full p-3 border rounded-xl bg-base-bg mb-3"
           >
-            <div
-              v-if="color === c"
-              class="w-full h-full flex items-center justify-center text-xl"
+            <option
+              v-for="cat in iconCategoryList"
+              :value="cat.key"
+              :key="cat.key"
             >
-              ✓
+              {{ cat.label }}
+            </option>
+          </select>
+
+          <!-- ICONS -->
+          <div class="grid grid-cols-4 md:grid-cols-5 gap-3">
+            <div
+              v-for="ic in iconCategories[selectedIconCategory]"
+              :key="ic"
+              @click="icon = ic"
+              class="p-3 rounded-xl border cursor-pointer flex items-center justify-center bg-base-card hover:bg-base-bg"
+              :class="icon === ic ? 'ring-2 ring-accent' : ''"
+            >
+              <Icon :name="ic" class="text-3xl" />
             </div>
           </div>
         </div>
 
-        <!-- NAME -->
-        <input
-          v-model="name"
-          class="w-full p-3 border rounded-xl mb-4 bg-base-bg"
-          placeholder="ชื่อหมวดหมู่"
-        />
-
-        <!-- ICON CATEGORY DROPDOWN -->
-        <select
-          v-model="selectedIconCategory"
-          class="w-full p-3 border rounded-xl bg-base-bg mb-3"
-        >
-          <option
-            v-for="cat in iconCategoryList"
-            :value="cat.key"
-            :key="cat.key"
-          >
-            {{ cat.label }}
-          </option>
-        </select>
-
-        <!-- ICON PICKER -->
-        <div class="grid grid-cols-5 gap-3 max-h-48 overflow-y-auto">
-          <div
-            v-for="ic in iconCategories[selectedIconCategory]"
-            :key="ic"
-            @click="icon = ic"
-            class="p-3 rounded-xl border cursor-pointer flex items-center justify-center bg-white hover:bg-gray-100"
-            :class="icon === ic ? 'ring-2 ring-accent' : ''"
-          >
-            <Icon :name="ic" class="text-3xl" />
-          </div>
-        </div>
-
+        <!-- FOOTER -->
         <button
           @click="addCategory"
           class="w-full p-3 mt-4 rounded-xl bg-accent hover:bg-accent-hover text-white font-semibold"
