@@ -3,7 +3,7 @@ import { ref, onMounted, watch } from "vue";
 
 definePageMeta({
   layout: "header",
-  title: "Event Management",
+  title: "Expense Categories",
 });
 
 const API = "http://localhost:8000/api/categories";

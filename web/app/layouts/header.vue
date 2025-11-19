@@ -104,7 +104,7 @@ const isActive = (path) => route.path.startsWith(path);
 
         <!-- Team Management -->
         <NuxtLink
-          to="/team-manage"
+          to="/team-manage/teamdetails"
           :class="[
             'px-4 py-2 rounded-full transition',
             isActive('/team-manage')
