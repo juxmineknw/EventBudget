@@ -14,14 +14,14 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        return Category::create($request->only(['name', 'icon']));
+        return Category::create($request->only(['name', 'icon','color']));
     }
 
     public function update(Request $request, $id)
     {
         $category = Category::findOrFail($id);
 
-        $category->update($request->only(['name', 'icon']));
+        $category->update($request->only(['name', 'icon','color']));
 
         return $category;
     }
