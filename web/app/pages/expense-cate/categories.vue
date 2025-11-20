@@ -44,7 +44,7 @@ const iconCategoryList = [
   { key: "animals", label: "Animals" },
   { key: "gifts", label: "Gifts" },
   { key: "travel", label: "Travel" },
-  { key: "drinks", label: "Drinks" }
+  { key: "drinks", label: "Drinks" },
 ];
 
 const selectedIconCategory = ref("money");
@@ -87,14 +87,13 @@ const iconCategories = {
     "twemoji:rocket",
   ],
   drinks: [
-    "twemoji:hot-beverage",   
-    "twemoji:teacup-without-handle", 
-    "twemoji:glass-of-milk",   
-    "twemoji:clinking-beer-mugs", 
-    "twemoji:bubble-tea",       
+    "twemoji:hot-beverage",
+    "twemoji:teacup-without-handle",
+    "twemoji:glass-of-milk",
+    "twemoji:clinking-beer-mugs",
+    "twemoji:bubble-tea",
   ],
 };
-
 
 // ---------------------- LOAD DATA ----------------------
 const load = async () => {
@@ -159,7 +158,7 @@ const saveEdit = async () => {
   load();
 };
 const findCategoryByIcon = (icon) => {
-  return Object.keys(iconCategories).find(key =>
+  return Object.keys(iconCategories).find((key) =>
     iconCategories[key].includes(icon)
   );
 };
@@ -168,7 +167,7 @@ const search = ref("");
 const filteredCategories = computed(() => {
   if (!search.value) return categories.value;
 
-  return categories.value.filter(cat =>
+  return categories.value.filter((cat) =>
     cat.name.toLowerCase().includes(search.value.toLowerCase())
   );
 });
@@ -204,13 +203,13 @@ onMounted(load);
         </div>
       </div>
 
-        <!-- RIGHT: ADD BUTTON -->
+      <!-- RIGHT: ADD BUTTON -->
       <button
-  @click="openAdd"
-  class="w-14 h-14 bg-[#F6A441] rounded-full shadow-lg flex items-center justify-center"
->
-  <span class="text-white text-4xl leading-none pb-[5px]">+</span>
-</button>
+        @click="openAdd"
+        class="w-14 h-14 bg-[#F6A441] rounded-full shadow-lg flex items-center justify-center"
+      >
+        <span class="text-white text-4xl leading-none pb-[5px]">+</span>
+      </button>
     </div>
 
     <!-- Category Box -->
@@ -242,16 +241,15 @@ onMounted(load);
         <div class="flex gap-2 mt-4">
           <button
             @click.stop="openEdit(cat)"
-            class="w-8 h-8 rounded-full bg-[#ffe3ca] shadow flex items-center justify-center"
+            class="w-8 h-8 rounded-full bg-[#ffd9b8]/70 border border-[#ff9c5a] shadow flex items-center justify-center"
           >
-            ✏️
+            <span class="text-base">✏️</span>
           </button>
-
           <button
             @click.stop="deleteCategory(cat.id)"
-            class="w-8 h-8 rounded-full bg-[#ffe4e3] shadow flex items-center justify-center"
+            class="w-8 h-8 rounded-full bg-[#ffd0ce]/70 border border-[#ff6a6a] shadow flex items-center justify-center"
           >
-            🗑️
+            <span class="text-base">🗑️</span>
           </button>
         </div>
       </div>
