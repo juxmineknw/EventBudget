@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 
 definePageMeta({
   layout: "header",
@@ -39,12 +39,12 @@ const colorOptions = [
 
 // ---------------------- ICON CATEGORY ----------------------
 const iconCategoryList = [
-  { key: "money", label: "money" },
-  { key: "food", label: "food" },
-  { key: "animals", label: "animals" },
-  { key: "gifts", label: "gifts" },
-  { key: "travel", label: "travel" },
-  { key: "drinks", label: "drinks" }
+  { key: "money", label: "Money" },
+  { key: "food", label: "Food" },
+  { key: "animals", label: "Animals" },
+  { key: "gifts", label: "Gifts" },
+  { key: "travel", label: "Travel" },
+  { key: "drinks", label: "Drinks" }
 ];
 
 const selectedIconCategory = ref("money");
@@ -94,7 +94,7 @@ const iconCategories = {
     "twemoji:bubble-tea",       
   ],
 };
-const search = ref(""); 
+
 
 // ---------------------- LOAD DATA ----------------------
 const load = async () => {
@@ -136,8 +136,11 @@ const openEdit = (cat) => {
   editId.value = cat.id;
   editName.value = cat.name;
   editIcon.value = cat.icon;
-  editColor.value = cat.color;
-  selectedIconCategory.value = "money";
+  editColor.value = cat.color || "#FFE5B4";
+
+  // หาหมวดของไอคอนนี้ และเลือก dropdown ให้ถูก
+  const foundCategory = findCategoryByIcon(cat.icon);
+  selectedIconCategory.value = foundCategory || "money";
 
   showEditModal.value = true;
 };
@@ -155,6 +158,20 @@ const saveEdit = async () => {
   showEditModal.value = false;
   load();
 };
+const findCategoryByIcon = (icon) => {
+  return Object.keys(iconCategories).find(key =>
+    iconCategories[key].includes(icon)
+  );
+};
+
+const search = ref("");
+const filteredCategories = computed(() => {
+  if (!search.value) return categories.value;
+
+  return categories.value.filter(cat =>
+    cat.name.toLowerCase().includes(search.value.toLowerCase())
+  );
+});
 
 // ---------------------- Disable scroll when popup open ----------------------
 watch([showAddModal, showEditModal], ([add, edit]) => {
@@ -199,7 +216,7 @@ onMounted(load);
     <!-- Category Box -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
       <div
-        v-for="cat in categories"
+        v-for="cat in filteredCategories"
         :key="cat.id"
         class="rounded-3xl p-4 relative hover:shadow-lg transition"
         :style="{

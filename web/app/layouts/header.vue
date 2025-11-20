@@ -13,12 +13,10 @@ const isActive = (path) => route.path.startsWith(path);
 
 <template>
   <div class="min-h-screen bg-[#FBF7F4]">
-    <!-- HEADER -->
     <header
       class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-[0_8px_24px_rgba(236,140,76,0.10)] flex items-center justify-between px-6 py-4"
     >
       <div class="flex items-center gap-4">
-        <!-- Hamburger Left -->
         <button
           @click="toggleMenu"
           class="w-10 h-10 rounded-full border border-[#ffd2b2] bg-[#fff6f1] flex flex-col items-center justify-center gap-[5px] shrink-0 hover:bg-[#ffefe6] transition-all"
