@@ -15,10 +15,10 @@ Route::apiResource('categories', CategoryController::class);
 
 use App\Http\Controllers\TeamMemberController;
 
-Route::get('/team-members', [TeamMemberController::class, 'index']);
-Route::get('/team-members/{id}', [TeamMemberController::class, 'show']);
-Route::post('/team-members', [TeamMemberController::class, 'store']);
-Route::put('/team-members/{id}', [TeamMemberController::class, 'update']);
-Route::delete('/team-members/{id}', [TeamMemberController::class, 'destroy']);
-Route::apiResource('team-members', TeamMemberController::class);
+Route::get('/team-members', [CategoryController::class, 'index']);
+Route::get('/team-members/{id}', [CategoryController::class, 'show']);
+Route::post('/team-members', [CategoryController::class, 'store']);
+Route::put('/team-members/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+Route::apiResource('team-members', CategoryController::class);
 

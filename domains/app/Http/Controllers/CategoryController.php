@@ -14,21 +14,34 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        return Category::create($request->only(['name', 'icon','color']));
+        return Category::create([
+            'name' => $request->name,
+            'icon' => $request->icon,
+            'color' => $request->color,
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        $category = Category::findOrFail($id);
+        $cat = Category::findOrFail($id);
 
-        $category->update($request->only(['name', 'icon','color']));
+        $cat->update([
+            'name' => $request->name,
+            'icon' => $request->icon,
+            'color' => $request->color,
+        ]);
 
-        return $category;
+        return response()->json(['success' => true]);
     }
 
     public function destroy($id)
-    {
-        Category::findOrFail($id)->delete();
-        return response()->json(['message' => 'deleted']);
-    }
+{
+    Category::findOrFail($id)->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Category deleted'
+    ]);
+}
+
 }
