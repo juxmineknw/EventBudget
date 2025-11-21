@@ -38,7 +38,7 @@ const openEdit = (cat) => {
 };
 
 const confirmDelete = (cat) => {
-  if (!confirm("ต้องการลบหมวดหมู่นี้หรือไม่?")) {
+  if (!confirm(`Delete category "${cat.name}"?`)) {
     return;
   }
   deleteCategory(cat.id);

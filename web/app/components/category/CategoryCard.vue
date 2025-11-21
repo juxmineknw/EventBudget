@@ -23,7 +23,7 @@
     <div class="flex gap-2 mt-4">
       <button
         @click.stop="$emit('edit', cat)"
-        class="w-8 h-8 rounded-full bg-[#ffd9b8] border border-[#ff9c5a] shadow flex items-center justify-center"
+        class="w-8 h-8 rounded-full bg-[#ffebdd] border border-[#ffaf53] shadow flex items-center justify-center hover:bg-[#ffe2b2] active:scale-95 transition"
       >
         ✏️
       </button>
