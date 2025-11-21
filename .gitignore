@@ -1,0 +1,29 @@
+# Node
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Nuxt
+.nuxt/
+dist/
+.cache/
+coverage/
+
+# Laravel
+/vendor/
+.env
+.env.*
+/storage/*.key
+/storage/app/public/*
+/storage/logs/*
+/bootstrap/cache/*
+
+# Docker
+*.pid
+*.seed
+*.pid.lock
+
+# System
+.DS_Store
+Thumbs.db
