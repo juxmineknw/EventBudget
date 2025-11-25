@@ -9,11 +9,13 @@ export const useSettingsApi = () => {
   const teamMembers = ref([]);
 
   const loadTeamMembers = async () => {
-    teamMembers.value = await $fetch(`${API}/team-members`);
+    const res = await $fetch(`${API}/team-members`);
+    teamMembers.value = res.data ?? res;
   };
 
   const getTeamMember = async (id) => {
-    return await $fetch(`${API}/team-members/${id}`);
+    const res = await $fetch(`${API}/team-members/${id}`);
+    return res.data ?? res;
   };
 
   const createTeamMember = async (data) => {
@@ -42,7 +44,8 @@ export const useSettingsApi = () => {
   const categories = ref([]);
 
   const loadCategories = async () => {
-    categories.value = await $fetch(`${API}/categories`);
+    const res = await $fetch(`${API}/categories`);
+    categories.value = res.data ?? res;
   };
 
   const createCategory = async (data) => {
@@ -71,7 +74,8 @@ export const useSettingsApi = () => {
   const currencies = ref([]);
 
   const loadCurrencies = async () => {
-    currencies.value = await $fetch(`${API}/currencies`);
+    const res = await $fetch(`${API}/currencies`);
+    currencies.value = res.data ?? res;
   };
 
   const createCurrency = async (data) => {
@@ -94,9 +98,6 @@ export const useSettingsApi = () => {
     });
   };
 
-  // ==============================
-  // RETURN EXPORT — อยู่นี่!
-  // ==============================
   return {
     // Team
     teamMembers,

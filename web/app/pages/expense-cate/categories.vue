@@ -1,16 +1,18 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useCategories } from "@/composables/useCategories";
+
+// Components
+import CategoryCard from "@/components/category/CategoryCard.vue";
+import CategoryAddModal from "@/components/category/CategoryAddModal.vue";
+import CategoryEditModal from "@/components/category/CategoryEditModal.vue";
 
 definePageMeta({
   layout: "header",
   title: "Expense Categories",
 });
 
-import { useCategories } from "@/composables/useCategories";
-import CategoryCard from "@/components/category/CategoryCard.vue";
-import CategoryAddModal from "@/components/category/CategoryAddModal.vue";
-import CategoryEditModal from "@/components/category/CategoryEditModal.vue";
-
+// Composables
 const {
   categories,
   loadCategories,
@@ -19,19 +21,23 @@ const {
   deleteCategory,
 } = useCategories();
 
+// State
 const search = ref("");
 const showAddModal = ref(false);
 const showEditModal = ref(false);
 const editingCategory = ref(null);
 
+// Lifecycle
 onMounted(loadCategories);
 
+// Computed
 const filteredCategories = computed(() =>
   categories.value.filter((cat) =>
     cat.name.toLowerCase().includes(search.value.toLowerCase())
   )
 );
 
+// Methods
 const openEdit = (cat) => {
   editingCategory.value = { ...cat };
   showEditModal.value = true;
@@ -47,11 +53,11 @@ const confirmDelete = (cat) => {
 
 <template>
   <div>
-
-    <!-- Search + Add Button -->
     <div class="flex items-center gap-4 mb-6 text-base md:text-lg">
+      
       <button
-        class="px-6 py-2 rounded-full bg-[#FFD578] text-white font-semibold shadow text-sm md:text-lg">
+        class="px-6 py-2 rounded-full bg-[#FFD578] text-white font-semibold shadow text-sm md:text-lg"
+      >
         All
       </button>
 
@@ -63,32 +69,28 @@ const confirmDelete = (cat) => {
 
       <button
         @click="showAddModal = true"
-        class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#F6A441] text-white text-xl md:text-2xl shadow">
+        class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#F6A441] text-white text-xl md:text-2xl shadow"
+      >
         +
       </button>
     </div>
 
-    <!-- Category Grid -->
     <div class="grid 
-    grid-cols-2
-    gap-2               
-    sm:gap-4
-    sm:grid-cols-2
-    md:grid-cols-3        
-    lg:grid-cols-5">
-
+        grid-cols-2       
+        gap-2             
+        sm:gap-4          
+        sm:grid-cols-2    
+        md:grid-cols-3    lg:grid-cols-5"   >
       <CategoryCard
         v-for="cat in filteredCategories"
         :key="cat.id"
         :cat="cat"
-        class="text-sm md:text-base"
+        class="text-sm md:text-base" 
         @edit="openEdit"
         @delete="confirmDelete"
       />
-
     </div>
 
-    <!-- Modals -->
     <CategoryAddModal
       v-if="showAddModal"
       @close="showAddModal = false"
@@ -101,6 +103,5 @@ const confirmDelete = (cat) => {
       @close="showEditModal = false"
       @save="updateCategory"
     />
-
   </div>
 </template>
