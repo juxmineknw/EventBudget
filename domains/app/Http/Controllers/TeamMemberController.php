@@ -59,6 +59,10 @@ class TeamMemberController extends Controller
         $member = TeamMember::findOrFail($id);
 
         $data = $request->validate([
+            // ... (validation อื่นๆ เหมือนเดิม) ...
+            'passport_image'    => 'nullable',  // ตัด rule string ออกชั่วคราวเพื่อให้ยืดหยุ่น
+            'profile_image'     => 'nullable',
+            // ใส่ field อื่นๆ ให้ครบเหมือนเดิม
             'personalname'      => 'nullable|string|max:255',
             'given_name'        => 'nullable|string|max:255',
             'surname'           => 'nullable|string|max:255',
@@ -72,28 +76,42 @@ class TeamMemberController extends Controller
             'date_expiry'       => 'nullable|date',
             'personal_no'       => 'nullable|string|max:100',
             'issuing_authority' => 'nullable|string|max:255',
-            'passport_image'    => 'nullable|string',   // Base64
-            'profile_image'     => 'nullable|string',   // Base64
         ]);
 
-        // Passport Image
+        // ------------------------------------------
+        // แก้ไขส่วนจัดการรูป Passport
+        // ------------------------------------------
         if (!empty($data['passport_image'])) {
-
-            if ($member->passport_image && Storage::disk('public')->exists($member->passport_image)) {
-                Storage::disk('public')->delete($member->passport_image);
+            // เช็คว่าเป็น Base64 หรือไม่ (รูปใหม่ต้องขึ้นต้นด้วย data:image)
+            if (preg_match('/^data:image\/(\w+);base64,/', $data['passport_image'])) {
+                
+                // ถ้ามีรูปเก่า ให้ลบทิ้งก่อน
+                if ($member->passport_image && Storage::disk('public')->exists($member->passport_image)) {
+                    Storage::disk('public')->delete($member->passport_image);
+                }
+                
+                // บันทึกรูปใหม่
+                $data['passport_image'] = $this->saveBase64Image($data['passport_image'], 'passports');
+            } else {
+                // ถ้าไม่ใช่ Base64 (แปลว่าเป็นชื่อไฟล์เดิม) -> ให้ลบออกจาก array data เพื่อไม่ให้มันไปทับค่าใน DB
+                unset($data['passport_image']);
             }
-
-            $data['passport_image'] = $this->saveBase64Image($data['passport_image'], 'passports');
         }
 
-        // Profile Image
+        // ------------------------------------------
+        // แก้ไขส่วนจัดการรูป Profile (ใช้ logic เดียวกัน)
+        // ------------------------------------------
         if (!empty($data['profile_image'])) {
+            if (preg_match('/^data:image\/(\w+);base64,/', $data['profile_image'])) {
+                
+                if ($member->profile_image && Storage::disk('public')->exists($member->profile_image)) {
+                    Storage::disk('public')->delete($member->profile_image);
+                }
 
-            if ($member->profile_image && Storage::disk('public')->exists($member->profile_image)) {
-                Storage::disk('public')->delete($member->profile_image);
+                $data['profile_image'] = $this->saveBase64Image($data['profile_image'], 'profiles');
+            } else {
+                unset($data['profile_image']);
             }
-
-            $data['profile_image'] = $this->saveBase64Image($data['profile_image'], 'profiles');
         }
 
         $member->update($data);
